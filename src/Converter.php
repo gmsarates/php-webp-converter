@@ -3,8 +3,7 @@
 class Converter
 {
     private $discovered_files = [];
-    private $path = __DIR__;
-    private $args = null;
+    private $path = null;
 
     public function _readFolder($path)
     {
@@ -156,12 +155,17 @@ class Converter
         if (isset($options['path']) && trim($options['path']) != '') {
             $this->path = $options['path'];
         } else {
-            $input_path = readline("Enter the path of the images [{$this->path}]: ");
+            $input_path = readline("Enter the path of the images: ");
             if (trim($input_path) != '') $this->path = $input_path;
         }
 
+        if (is_null($this->path)) {
+            Console::log("Please insert a path to scan", 'red');
+            return false;
+        }
+
         if (!is_dir($this->path)) {
-            Console::log("Path '{$this->path}' does not exist \n", 'red');
+            Console::log("Path '{$this->path}' does not exist", 'red');
             return false;
         }
 
