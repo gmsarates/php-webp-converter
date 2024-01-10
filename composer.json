@@ -2,7 +2,6 @@
     "name": "gmsarates/php-webp-converter",
     "description": "This is a PHP CLI tool to convert all files in a specific folder to webp format",
     "require": {
-        "php": ">=8.2",
-        "another-vendor/package": "1.*"
+        "php": ">=8.2"
     }
 }
