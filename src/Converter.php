@@ -4,6 +4,7 @@ class Converter
 {
     private $discovered_files = [];
     private $path = __DIR__;
+    private $args = null;
 
     public function _readFolder($path)
     {
@@ -134,11 +135,30 @@ class Converter
         return $output;
     }
 
-    public function init()
+    public function init($args = null)
     {
-        $input_path = readline("Enter the path of the images [{$this->path}]: ");
+        $options = [];
+        if (!is_null($args) && is_array($args) && sizeof($args) > 1) {
+            unset($args[0]);
+            foreach ($args as $arg) {
+                try {
+                    $a = explode('=', $arg);
+    
+                    match ($a[0]) {
+                        '--path', '-P' => $options['path'] = $a[1],
+                        '--yes', '-Y' => $options['yes'] = true,
+                        '--delete', '-D' => $options['delete'] = true,
+                    };
+                } catch (\Throwable $th) {}
+            }
+        }
 
-        if (trim($input_path) != '') $this->path = $input_path;
+        if (isset($options['path']) && trim($options['path']) != '') {
+            $this->path = $options['path'];
+        } else {
+            $input_path = readline("Enter the path of the images [{$this->path}]: ");
+            if (trim($input_path) != '') $this->path = $input_path;
+        }
 
         if (!is_dir($this->path)) {
             Console::log("Path '{$this->path}' does not exist \n", 'red');
@@ -156,12 +176,25 @@ class Converter
             }
         }
 
-        Console::log('Do you want to convert all?');
-        $confirmation = readline('[y/N]: ');
+        $confirmation = 'n';
+        if (isset($options['yes']) && $options['yes']) {
+            $confirmation = 'y';
+            Console::log('Confirmation skipped', 'blue');
+        } else {
+            Console::log('Do you want to convert all?');
+            $confirmation = readline('[y/N]: ');
+        }
 
         if (strtolower($confirmation) == 'y') {
-            Console::log('Do you want to delete the original files?', 'red');
-            $remove = (strtolower(readline('[y/N]: ')) == 'y') ? true : false;
+            $remove = 'n';
+            if (isset($options['delete']) && $options['delete']) {
+                $remove = 'y';
+                Console::log('Deleting all files', 'blue');
+            } else {
+                Console::log('Do you want to delete the original files?', 'red');
+                $remove = (strtolower(readline('[y/N]: ')) == 'y') ? true : false;
+            }
+            
             $result = self::convert($files, $remove);
 
             if (sizeof($result) > 0) {

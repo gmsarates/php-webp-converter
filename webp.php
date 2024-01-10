@@ -3,6 +3,6 @@
 	require(__DIR__ . '/src/Converter.php');
 
 	$webp = new Converter();
-	$webp->init();
+	$webp->init($argv);
 
 ?>
