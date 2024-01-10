@@ -40,3 +40,10 @@ php webp.php --path=/var/www/html/project/images -Y -D
 ```
 
 **Warning:** The `--delete` (or `-D`) parameter is dangerous! It will delete the original files. Use with caution.
+
+
+## Results
+
+![ex1](https://github.com/gmsarates/php-webp-converter/assets/30908688/9995d6ae-ff80-4db4-a550-5a2cf03b8e90)
+
+
