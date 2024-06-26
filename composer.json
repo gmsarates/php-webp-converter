@@ -3,5 +3,12 @@
     "description": "This is a PHP CLI tool to convert all files in a specific folder to webp format",
     "require": {
         "php": ">=8.2"
-    }
+    },
+    "autoload": {
+        "psr-4": {
+            "Gmsarates\\Webp\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": false
 }

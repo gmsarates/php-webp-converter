@@ -1,11 +1,12 @@
 <?php
 
+namespace Gmsarates\Webp;
 class Converter
 {
     private $discovered_files = [];
     private $path = null;
 
-    public function _readFolder($path)
+    private function _readFolder($path): array
     {
         $files = array_diff(scandir($path), array('.', '..'));
         if (sizeof($files) > 0) {
@@ -142,11 +143,12 @@ class Converter
             foreach ($args as $arg) {
                 try {
                     $a = explode('=', $arg);
-    
+
                     match ($a[0]) {
                         '--path', '-P' => $options['path'] = $a[1],
                         '--yes', '-Y' => $options['yes'] = true,
                         '--delete', '-D' => $options['delete'] = true,
+                        '--quality', '-Q' => $options['quality'] = $a[1],
                     };
                 } catch (\Throwable $th) {}
             }
@@ -157,6 +159,11 @@ class Converter
         } else {
             $input_path = readline("Enter the path of the images: ");
             if (trim($input_path) != '') $this->path = $input_path;
+        }
+
+        if (!isset($options['quality'])) {
+            $quality = readline("Enter the quality (percent) of the output image [80]: ");
+            if (trim($quality) == '') $quality = 80;
         }
 
         if (is_null($this->path)) {
@@ -198,8 +205,8 @@ class Converter
                 Console::log('Do you want to delete the original files?', 'red');
                 $remove = (strtolower(readline('[y/N]: ')) == 'y') ? true : false;
             }
-            
-            $result = self::convert($files, $remove);
+
+            $result = self::convert($files, $remove, $quality);
 
             if (sizeof($result) > 0) {
                 foreach ($result as $r) {

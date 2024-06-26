@@ -1,4 +1,7 @@
 <?php
+
+namespace Gmsarates\Webp;
+
 /**
  * PHP Colored CLI
  * Used to log strings with custom colors to console using php

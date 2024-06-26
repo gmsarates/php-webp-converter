@@ -1,0 +1,9 @@
+# Composer template
+/vendor/
+composer.lock
+
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
