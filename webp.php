@@ -1,6 +1,7 @@
 <?php
-	require(__DIR__ . '/src/Console.php');
-	require(__DIR__ . '/src/Converter.php');
+    require(__DIR__ . '/vendor/autoload.php');
+
+    use Gmsarates\Webp\Converter;
 
 	$webp = new Converter();
 	$webp->init($argv);
